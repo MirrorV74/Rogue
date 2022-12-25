@@ -53,8 +53,8 @@ while (true)
         rowsInRoom = random.Next(Constants.MinRowsInRoom, Constants.MaxRowsInRoom + 1);
         colsInRoom = random.Next(Constants.MinColsInRoom, Constants.MaxColsInRoom + 1);
 
-        roomStartPositionRow = random.Next(0, Constants.DungeonHeight + 1 - rowsInRoom);
-        roomStartPositionCol = random.Next(0, Constants.DungeonWidth + 1 - colsInRoom);
+        roomStartPositionRow = random.Next(1, Constants.DungeonHeight  - rowsInRoom);
+        roomStartPositionCol = random.Next(1, Constants.DungeonWidth  - colsInRoom);
 
         n = roomStartPositionRow;
         m = roomStartPositionCol;
@@ -67,16 +67,16 @@ while (true)
         {
             for (int j = m; j < m + colsInRoom; j++)
             {
-                 if (dungeon[i, j] != Cell.OutOfBounds  //|
-                //     dungeon[i+1, j] != Cell.OutOfBounds |
-                //     dungeon[i-1, j] != Cell.OutOfBounds | 
-                //     dungeon[i, j+1] != Cell.OutOfBounds |
-                //     dungeon[i, j-1] != Cell.OutOfBounds
-                    )
+                if (  dungeon[i, j] != Cell.OutOfBounds 
+                   || dungeon[i + 1, j] != Cell.OutOfBounds 
+                   || dungeon[i - 1, j] != Cell.OutOfBounds 
+                   || dungeon[i, j + 1] != Cell.OutOfBounds 
+                   || dungeon[i, j - 1] != Cell.OutOfBounds)
                 {
                     enoughSpace = false;
                     break;
                 }
+                
             }
         }
 
@@ -113,7 +113,7 @@ while (true)
     #endregion
 
     #region Посмотреть чё там нагенерилось
-    
+
     for (int i = 0; i < Constants.DungeonHeight; i++)
     {
         for (int j = 0; j < Constants.DungeonWidth; j++)
@@ -145,7 +145,7 @@ while (true)
 
         Console.WriteLine();
     }
-    
+
     // for (int i = 0; i < Constants.DungeonHeight; i++)
     // {
     //     for (int j = 0; j < Constants.DungeonWidth; j++)
