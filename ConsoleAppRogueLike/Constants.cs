@@ -3,7 +3,7 @@ namespace ConsoleAppRogueLike;
 public class Constants
 {
     public static int
-        MinRowsInRoom = 6,
+        MinRowsInRoom = 7,
         MaxRowsInRoom = 10,
 
         MinColsInRoom = 10,
