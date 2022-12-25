@@ -3,8 +3,8 @@ namespace ConsoleAppRogueLike;
 public class Cell
 {
     public static char
-        Empty = '+',
-        OutOfBounds = '|',
+        FloorEmpty = '+',
+        OutOfBounds = ' ',
         Wall = '#',
         Portal = 'O',
         Bound = 'x';

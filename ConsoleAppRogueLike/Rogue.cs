@@ -13,7 +13,7 @@ using ConsoleAppRogueLike;
 
 Random random = new Random();
 
-char[,] field;
+char[,] dungeon;
 
 int rowsInRoom, colsInRoom;
 int roomStartPositionRow, roomStartPositionCol;
@@ -24,7 +24,7 @@ int m;
 
 int StartIHero, StartJHero;
 
-int iHero, jHero;
+int iHero = 1, jHero = 1;
 
 bool heroInAdventure;
 
@@ -32,13 +32,13 @@ while (true)
 {
     #region Генерим подземелье
 
-    field = new char[Constants.DungeonHeight, Constants.DungeonWidth];
+    dungeon = new char[Constants.DungeonHeight, Constants.DungeonWidth];
 
     for (int i = 0; i < Constants.DungeonHeight; i++)
     {
         for (int j = 0; j < Constants.DungeonWidth; j++)
         {
-            field[i, j] = Cell.OutOfBounds;
+            dungeon[i, j] = Cell.OutOfBounds;
         }
     }
 
@@ -67,7 +67,12 @@ while (true)
         {
             for (int j = m; j < m + colsInRoom; j++)
             {
-                if (field[i, j] != Cell.OutOfBounds)
+                 if (dungeon[i, j] != Cell.OutOfBounds  //|
+                //     dungeon[i+1, j] != Cell.OutOfBounds |
+                //     dungeon[i-1, j] != Cell.OutOfBounds | 
+                //     dungeon[i, j+1] != Cell.OutOfBounds |
+                //     dungeon[i, j-1] != Cell.OutOfBounds
+                    )
                 {
                     enoughSpace = false;
                     break;
@@ -85,20 +90,20 @@ while (true)
             {
                 for (int j = m; j < m + colsInRoom; j++)
                 {
-                    field[i, j] = Cell.Empty;
+                    dungeon[i, j] = Cell.FloorEmpty;
                 }
             }
 
             for (int i = n; i < n + rowsInRoom; i++)
             {
-                field[i, m] = Cell.Bound;
-                field[i, colsInRoom - 1 + m] = Cell.Bound;
+                dungeon[i, m] = Cell.Bound;
+                dungeon[i, colsInRoom - 1 + m] = Cell.Bound;
             }
 
             for (int j = m; j < m + colsInRoom; j++)
             {
-                field[n, j] = Cell.Bound;
-                field[rowsInRoom - 1 + n, j] = Cell.Bound;
+                dungeon[n, j] = Cell.Bound;
+                dungeon[rowsInRoom - 1 + n, j] = Cell.Bound;
             }
 
             roomsQuantity++;
@@ -108,16 +113,48 @@ while (true)
     #endregion
 
     #region Посмотреть чё там нагенерилось
-
+    
     for (int i = 0; i < Constants.DungeonHeight; i++)
     {
         for (int j = 0; j < Constants.DungeonWidth; j++)
         {
-            Console.Write(field[i, j]+" ");
+            if (i == iHero && j == jHero)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write(Constants.HeroSkin);
+            }
+            else
+            {
+                switch (dungeon[i, j])
+                {
+                    case var value when value == Cell.FloorEmpty:
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        break;
+
+                    case var value when value == Cell.Portal:
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        break;
+                    case var value when value == Cell.Bound:
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        break;
+                }
+
+                Console.Write(dungeon[i, j]);
+            }
         }
 
         Console.WriteLine();
     }
+    
+    // for (int i = 0; i < Constants.DungeonHeight; i++)
+    // {
+    //     for (int j = 0; j < Constants.DungeonWidth; j++)
+    //     {
+    //         Console.Write(field[i, j]+" ");
+    //     }
+    //
+    //     Console.WriteLine();
+    // }
 
     #endregion
 

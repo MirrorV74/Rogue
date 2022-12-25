@@ -3,16 +3,16 @@ namespace ConsoleAppRogueLike;
 public class Constants
 {
     public static int
-        MinRowsInRoom = 7,
-        MaxRowsInRoom = 10,
+        MinRowsInRoom = 4,
+        MaxRowsInRoom = 7,
 
-        MinColsInRoom = 10,
-        MaxColsInRoom = 20,
+        MinColsInRoom = 7,
+        MaxColsInRoom = 15,
 
         DungeonHeight = 30,
         DungeonWidth = 60,
 
-        RoomMaxQuantity = 5;
+        RoomMaxQuantity = 10;
 
     public static char
 
