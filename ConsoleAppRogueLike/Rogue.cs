@@ -18,11 +18,10 @@ char[,] dungeon;
 int[,] roomValues;
 
 int rowsInRoom, colsInRoom;
-int roomStartPositionRow, roomStartPositionCol;
 int roomsQuantity;
 bool enoughSpace, allRoomsConnected;
-int n;
-int m;
+int roomStartPositionRow;
+int roomStartPositionCol;
 
 int StartIHero, StartJHero;
 
@@ -58,17 +57,14 @@ while (true)
 
         roomStartPositionRow = random.Next(1, Constants.DungeonHeight - rowsInRoom);
         roomStartPositionCol = random.Next(1, Constants.DungeonWidth - colsInRoom);
-
-        n = roomStartPositionRow;
-        m = roomStartPositionCol;
-
+        
         #region Возможность установки комнаты
 
         enoughSpace = true;
 
-        for (int i = n; i < n + rowsInRoom && enoughSpace; i++)
+        for (int i = roomStartPositionRow; i < roomStartPositionRow + rowsInRoom && enoughSpace; i++)
         {
-            for (int j = m; j < m + colsInRoom; j++)
+            for (int j = roomStartPositionCol; j < roomStartPositionCol + colsInRoom; j++)
             {
                 if (dungeon[i, j] != Cell.OutOfBounds
                     || dungeon[i + 1, j] != Cell.OutOfBounds
@@ -91,28 +87,26 @@ while (true)
             roomValues[roomsQuantity, 2] = roomStartPositionCol;
             roomValues[roomsQuantity, 3] = rowsInRoom;
             roomValues[roomsQuantity, 4] = colsInRoom;
-            roomValues[roomsQuantity, 5] = 0;
-
-            n = roomStartPositionRow;
-            m = roomStartPositionCol;
-            for (int i = n; i < n + rowsInRoom; i++)
+            roomValues[roomsQuantity, 5] = 1;
+            
+            for (int i = roomStartPositionRow; i < roomStartPositionRow + rowsInRoom; i++)
             {
-                for (int j = m; j < m + colsInRoom; j++)
+                for (int j = roomStartPositionCol; j < roomStartPositionCol + colsInRoom; j++)
                 {
                     dungeon[i, j] = Cell.FloorEmpty;
                 }
             }
 
-            for (int i = n; i < n + rowsInRoom; i++)
+            for (int i = roomStartPositionRow; i < roomStartPositionRow + rowsInRoom; i++)
             {
-                dungeon[i, m] = Cell.Bound;
-                dungeon[i, colsInRoom - 1 + m] = Cell.Bound;
+                dungeon[i, roomStartPositionCol] = Cell.Bound;
+                dungeon[i, colsInRoom - 1 + roomStartPositionCol] = Cell.Bound;
             }
 
-            for (int j = m; j < m + colsInRoom; j++)
+            for (int j = roomStartPositionCol; j < roomStartPositionCol + colsInRoom; j++)
             {
-                dungeon[n, j] = Cell.Bound;
-                dungeon[rowsInRoom - 1 + n, j] = Cell.Bound;
+                dungeon[roomStartPositionRow, j] = Cell.Bound;
+                dungeon[rowsInRoom - 1 + roomStartPositionRow, j] = Cell.Bound;
             }
 
             roomsQuantity++;
