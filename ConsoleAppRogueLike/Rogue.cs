@@ -20,7 +20,7 @@ int[,] roomValues;
 int rowsInRoom, colsInRoom;
 int roomStartPositionRow, roomStartPositionCol;
 int roomsQuantity;
-bool enoughSpace,allRoomsConnected;
+bool enoughSpace, allRoomsConnected;
 int n;
 int m;
 
@@ -56,8 +56,8 @@ while (true)
         rowsInRoom = random.Next(Constants.MinRowsInRoom, Constants.MaxRowsInRoom + 1);
         colsInRoom = random.Next(Constants.MinColsInRoom, Constants.MaxColsInRoom + 1);
 
-        roomStartPositionRow = random.Next(1, Constants.DungeonHeight  - rowsInRoom);
-        roomStartPositionCol = random.Next(1, Constants.DungeonWidth  - colsInRoom);
+        roomStartPositionRow = random.Next(1, Constants.DungeonHeight - rowsInRoom);
+        roomStartPositionCol = random.Next(1, Constants.DungeonWidth - colsInRoom);
 
         n = roomStartPositionRow;
         m = roomStartPositionCol;
@@ -70,16 +70,15 @@ while (true)
         {
             for (int j = m; j < m + colsInRoom; j++)
             {
-                if (  dungeon[i, j] != Cell.OutOfBounds 
-                   || dungeon[i + 1, j] != Cell.OutOfBounds 
-                   || dungeon[i - 1, j] != Cell.OutOfBounds 
-                   || dungeon[i, j + 1] != Cell.OutOfBounds 
-                   || dungeon[i, j - 1] != Cell.OutOfBounds)
+                if (dungeon[i, j] != Cell.OutOfBounds
+                    || dungeon[i + 1, j] != Cell.OutOfBounds
+                    || dungeon[i - 1, j] != Cell.OutOfBounds
+                    || dungeon[i, j + 1] != Cell.OutOfBounds
+                    || dungeon[i, j - 1] != Cell.OutOfBounds)
                 {
                     enoughSpace = false;
                     break;
                 }
-                
             }
         }
 
@@ -87,14 +86,13 @@ while (true)
 
         if (enoughSpace)
         {
-            
             roomValues[roomsQuantity, 0] = roomsQuantity + 1;
             roomValues[roomsQuantity, 1] = roomStartPositionRow;
             roomValues[roomsQuantity, 2] = roomStartPositionCol;
             roomValues[roomsQuantity, 3] = rowsInRoom;
             roomValues[roomsQuantity, 4] = colsInRoom;
             roomValues[roomsQuantity, 5] = 0;
-            
+
             n = roomStartPositionRow;
             m = roomStartPositionCol;
             for (int i = n; i < n + rowsInRoom; i++)
@@ -126,21 +124,20 @@ while (true)
     #region Генерация переходов
 
     allRoomsConnected = true;
-    
+
     while (!allRoomsConnected)
     {
-
         allRoomsConnected = true;
         for (int i = 0; i < Constants.RoomMaxQuantity; i++)
         {
-            if (roomValues[i,5] != 1)
+            if (roomValues[i, 5] != 1)
             {
                 allRoomsConnected = false;
                 break;
             }
         }
     }
-    
+
     #endregion
 
     #region Посмотреть чё там нагенерилось
@@ -158,16 +155,16 @@ while (true)
             {
                 switch (dungeon[i, j])
                 {
-                    case var value when value == Cell.FloorEmpty:
+                    case Cell.FloorEmpty:
                         Console.ForegroundColor = ConsoleColor.Red;
                         break;
-                    case var value when value == Cell.OutOfBounds:
+                    case Cell.OutOfBounds:
                         Console.ForegroundColor = ConsoleColor.Gray;
                         break;
-                    case var value when value == Cell.Portal:
+                    case Cell.Portal:
                         Console.ForegroundColor = ConsoleColor.Blue;
                         break;
-                    case var value when value == Cell.Bound:
+                    case Cell.Bound:
                         Console.ForegroundColor = ConsoleColor.Green;
                         break;
                 }
@@ -178,34 +175,24 @@ while (true)
 
         Console.WriteLine();
     }
-
-    // for (int i = 0; i < Constants.DungeonHeight; i++)
-    // {
-    //     for (int j = 0; j < Constants.DungeonWidth; j++)
-    //     {
-    //         Console.Write(field[i, j]+" ");
-    //     }
-    //
-    //     Console.WriteLine();
-    // }
-
-    #endregion
     
+    #endregion
+
     for (int i = 0; i < Constants.RoomMaxQuantity; i++)
     {
         for (int j = 0; j < 6; j++)
         {
-            Console.Write(roomValues[i,j]+" ");
+            Console.Write(roomValues[i, j] + " ");
         }
+
         Console.WriteLine();
     }
 
-    Console.Write(roomValues[0,0]+" ");
-    Console.Write(roomValues[0,1]+" ");
-    Console.Write(roomValues[0,2]+" ");
-    Console.Write(roomValues[0,3]+" ");
-    Console.Write(roomValues[0,4]+" ");
-    
+    Console.Write(roomValues[0, 0] + " ");
+    Console.Write(roomValues[0, 1] + " ");
+    Console.Write(roomValues[0, 2] + " ");
+    Console.Write(roomValues[0, 3] + " ");
+    Console.Write(roomValues[0, 4] + " ");
+
     Console.ReadKey();
-    
 }

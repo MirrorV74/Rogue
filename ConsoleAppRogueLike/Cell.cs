@@ -2,7 +2,7 @@ namespace ConsoleAppRogueLike;
 
 public class Cell
 {
-    public static char
+    public const char
         FloorEmpty = '+',
         OutOfBounds = '%',
         Portal = 'O',
