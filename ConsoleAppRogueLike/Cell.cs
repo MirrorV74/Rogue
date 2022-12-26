@@ -4,8 +4,8 @@ public class Cell
 {
     public static char
         FloorEmpty = '+',
-        OutOfBounds = ' ',
-        Wall = '#',
+        OutOfBounds = '%',
         Portal = 'O',
-        Bound = 'x';
+        Bound = 'x', 
+        Transition = '=';
 }

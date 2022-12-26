@@ -3,10 +3,11 @@
 //стены - объекты, прендалежат полю, по краям поля сделать стены
 //герой - объект, НЕ пренадлежит полю, рисуется поверх полю
 
-//1) генерация поля и стен на нём
-//2) генерация портала в поле (перандомировать поле если мы оказались заперты)
-//3) передвижение героя по полю
-//4) вход героя в портал и переход к шагу 1
+//1) генерация подземелья
+//2) генерация комнат
+//3) генерация переходов
+//4) передвижение героя по полю
+//5) вход героя в портал и переход к шагу 1
 
 using System.Xml;
 using ConsoleAppRogueLike;
@@ -14,11 +15,12 @@ using ConsoleAppRogueLike;
 Random random = new Random();
 
 char[,] dungeon;
+int[,] roomValues;
 
 int rowsInRoom, colsInRoom;
 int roomStartPositionRow, roomStartPositionCol;
 int roomsQuantity;
-bool enoughSpace;
+bool enoughSpace,allRoomsConnected;
 int n;
 int m;
 
@@ -47,6 +49,7 @@ while (true)
     #region Генерим комнаты
 
     roomsQuantity = 0;
+    roomValues = new int[Constants.RoomMaxQuantity, 6];
 
     while (roomsQuantity < Constants.RoomMaxQuantity)
     {
@@ -84,6 +87,14 @@ while (true)
 
         if (enoughSpace)
         {
+            
+            roomValues[roomsQuantity, 0] = roomsQuantity + 1;
+            roomValues[roomsQuantity, 1] = roomStartPositionRow;
+            roomValues[roomsQuantity, 2] = roomStartPositionCol;
+            roomValues[roomsQuantity, 3] = rowsInRoom;
+            roomValues[roomsQuantity, 4] = colsInRoom;
+            roomValues[roomsQuantity, 5] = 0;
+            
             n = roomStartPositionRow;
             m = roomStartPositionCol;
             for (int i = n; i < n + rowsInRoom; i++)
@@ -112,6 +123,26 @@ while (true)
 
     #endregion
 
+    #region Генерация переходов
+
+    allRoomsConnected = true;
+    
+    while (!allRoomsConnected)
+    {
+
+        allRoomsConnected = true;
+        for (int i = 0; i < Constants.RoomMaxQuantity; i++)
+        {
+            if (roomValues[i,5] != 1)
+            {
+                allRoomsConnected = false;
+                break;
+            }
+        }
+    }
+    
+    #endregion
+
     #region Посмотреть чё там нагенерилось
 
     for (int i = 0; i < Constants.DungeonHeight; i++)
@@ -128,9 +159,11 @@ while (true)
                 switch (dungeon[i, j])
                 {
                     case var value when value == Cell.FloorEmpty:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        break;
+                    case var value when value == Cell.OutOfBounds:
                         Console.ForegroundColor = ConsoleColor.Gray;
                         break;
-
                     case var value when value == Cell.Portal:
                         Console.ForegroundColor = ConsoleColor.Blue;
                         break;
@@ -157,7 +190,22 @@ while (true)
     // }
 
     #endregion
+    
+    for (int i = 0; i < Constants.RoomMaxQuantity; i++)
+    {
+        for (int j = 0; j < 6; j++)
+        {
+            Console.Write(roomValues[i,j]+" ");
+        }
+        Console.WriteLine();
+    }
 
-
+    Console.Write(roomValues[0,0]+" ");
+    Console.Write(roomValues[0,1]+" ");
+    Console.Write(roomValues[0,2]+" ");
+    Console.Write(roomValues[0,3]+" ");
+    Console.Write(roomValues[0,4]+" ");
+    
     Console.ReadKey();
+    
 }
